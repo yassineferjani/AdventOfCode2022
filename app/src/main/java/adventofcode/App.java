@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 
 public class App {
   public static void main(String[] args) throws FileNotFoundException {
-    Stage1.maxCalories("D:\\AdventOfCode\\app\\src\\main\\resources\\input.txt");
     Stage2.score("D:\\AdventOfCode\\app\\src\\main\\resources\\input2.txt");
     Stage3.score("D:\\AdventOfCode\\app\\src\\main\\resources\\input3.txt");
   }

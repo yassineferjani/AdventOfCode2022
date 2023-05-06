@@ -9,3 +9,7 @@
 
 rootProject.name = 'AdventOfCode'
 include('app')
+include 'readFile'
+include 'Stage1'
+include 'Stage2'
+
