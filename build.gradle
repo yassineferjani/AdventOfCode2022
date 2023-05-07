@@ -23,21 +23,3 @@ spotless {
         formatAnnotations()
     }
 }
-
-dependencies {
-    // Use JUnit Jupiter for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'
-
-    // This dependency is used by the application.
-    implementation project(":readFile")
-}
-
-application {
-    // Define the main class for the application.
-    mainClass = 'adventofcode.App'
-}
-
-tasks.named('test') {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
-}

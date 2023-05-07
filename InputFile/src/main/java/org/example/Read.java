@@ -1,4 +1,4 @@
-package org.stage;
+package org.example;
 
 import java.io.File;
 import java.io.FileNotFoundException;
