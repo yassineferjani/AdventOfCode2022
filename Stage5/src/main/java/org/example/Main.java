@@ -22,8 +22,10 @@ public class Main {
         crates.add(new LinkedList<>(List.of("T","Z","N","S")));
         crates.add(new LinkedList<>(List.of("M","S","D","J","R","Q","H","N")));
 
-        Service.rearrangement(crates,list);
+        Service.rearrangement9001(crates,list);
         Service.printLastStacks(crates);
+
+
 
     }
 }
