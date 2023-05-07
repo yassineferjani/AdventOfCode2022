@@ -9,5 +9,6 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         List<String> list = Read.readFile("D:\\AdventOfCode\\Stage4\\src\\main\\resources\\input4.txt");
         System.out.println(Service.numberOfFullyContainSeries(list));
+        System.out.println(Service.numberOfOverlapSeries(list));
     }
 }
