@@ -15,4 +15,5 @@ include 'Stage2'
 include 'Stage3'
 include 'Stage4'
 include 'Stage5'
+include 'Stage6'
 
