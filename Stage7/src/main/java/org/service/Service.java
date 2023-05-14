@@ -1,7 +1,9 @@
 
 package org.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Service {
 
@@ -9,22 +11,29 @@ public class Service {
         List<Directory> directories = new ArrayList<>();
         for (int i = 1; i < list.size(); i++) {
             if (list.get(i).matches("^\\$ ls") && list.get(i - 1).matches("^\\$ cd [a-zA-Z]+")) {
-                Directory d = createDirectory(list, i);
+                Directory d = createDirectory(list, i, directories);
                 directories.add(d);
             }
         }
+        System.out.println(directories);
         return directories;
     }
 
-    private static Directory createDirectory(List<String> list, int startIndex) {
+    private static Directory createDirectory(List<String> list, int startIndex, List<Directory> directories) {
         String directoryName = extractDirectoryNameFromCommand(list.get(startIndex - 1));
-        Directory directory = Directory.builder().name(directoryName).build();
+        Directory directory = new Directory(directoryName,null);
         int i = startIndex + 1;
         while (i < list.size() && (isFile(list.get(i)) || isDirectory(list.get(i)))) {
             if (isFile(list.get(i))) {
                 directory.getFiles().add(createFileFromString(list.get(i)));
-            } else {
-                directory.getDirectories().add(extractDirectoryName(list.get(i)));
+            } else if (isDirectory(list.get(i))){
+                String subdirName = extractDirectoryName(list.get(i));
+                Optional<Directory> subdir = directories.stream().filter(d -> d.getName().equals(subdirName)).findFirst();
+                if (subdir.isPresent()) {
+                    directory.getDirectories().add(subdir.get());
+                } else {
+                    directory.getDirectories().add(Directory.builder().name(subdirName).subDirectory(directoryName).build());
+                }
             }
             i++;
         }
@@ -55,33 +64,10 @@ public class Service {
         return s.replace("dir ", "").trim();
     }
 
-    private static long calculateSizeIterative(Directory directory, List<Directory> directories) {
-        long totalSize = directory.sizeFiles();
-        Set<String> visited = new HashSet<>();
-        Stack<Directory> stack = new Stack<>();
-        stack.push(directory);
-        visited.add(directory.getName());
-        while (!stack.isEmpty()) {
-            Directory dir = stack.pop();
-            for (String subdirName : dir.getDirectories()) {
-                if (!visited.contains(subdirName)) {
-                    Directory subdir = directories.stream().filter(d -> d.getName().equals(subdirName)).findFirst().orElse(null);
-                    if (subdir != null) {
-                        stack.push(subdir);
-                        visited.add(subdirName);
-                        totalSize += subdir.sizeFiles();
-                    }
-                }
-            }
-        }
-        return totalSize;
-    }
-
-    public static Long totalSize(List<String> list) {
+     public static Long totalSize(List<String> list) {
         List<Directory> directories =detectDirectories (list);
-        System.out.println(directories);
         return directories.stream()
-                .map(d -> calculateSizeIterative(d, directories))
+                .map(Directory::totalSize)
                 .filter(l -> l <= 100000)
                 .mapToLong(s -> s)
                 .sum();

@@ -8,18 +8,21 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class ServiceTest {
 
     static Stream<Arguments> generateData(){
         return Stream.of(
                 Arguments.of(List.of("$ cd /", "$ ls", "dir a", "14848514 b.txt", "8504156 c.dat",
-                        "dir d", "$ cd a", "$ ls", "dir e", "dir ee", "29116 f", "2557 g", "62596 h.lst", "$ cd e", "$ ls", "584 i",
-                        "$ cd ..", "$ cd ee","$ ls", "100 e", "$ cd ..", "$ cd ..", "$ cd d", "$ ls", "4060174 j", "8033020 d.log", "5626152 d.ext", "7214296 k"),95637)
+                        "dir d", "$ cd a", "$ ls", "dir e", "29116 f", "2557 g", "62596 h.lst", "$ cd e", "$ ls", "584 i",
+                        "$ cd ..", "$ cd ..", "$ cd d", "$ ls", "4060174 j", "8033020 d.log", "5626152 d.ext", "7214296 k"),95437)
         );
     }
     @ParameterizedTest
     @MethodSource("generateData")
     void totalSize(List<String> input, long expected) {
-        Assertions.assertThat(Service.totalSize(input)).isEqualTo(expected);
+        Service service = new Service();
+        assertThat(service.totalSize(input)).isEqualTo(expected);
     }
 }

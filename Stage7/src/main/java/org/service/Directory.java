@@ -10,7 +10,8 @@ import java.util.List;
 public class Directory  {
     String name;
     List<File> files = new ArrayList<>();
-    List<String> directories = new ArrayList<>();
+    List<Directory> directories = new ArrayList<>();
+    String subDirectory;
 
     public long sizeFiles(){
         return files.stream()
@@ -18,8 +19,11 @@ public class Directory  {
                 .mapToLong(l->l)
                 .sum();
     }
-   /* public long totalSize (){
-        return dir.stream().mapToLong(Directory::totalSize).sum() + sizeFiles();
-    }*/
+    public long totalSize (){
+        return directories.stream().mapToLong(Directory::totalSize).sum() + sizeFiles();
+    }
+    public String toString(){
+        return name + "  "+totalSize() + "  "+directories;
+    }
 
 }
