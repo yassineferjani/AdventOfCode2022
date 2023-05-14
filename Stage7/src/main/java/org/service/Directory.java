@@ -1,24 +1,25 @@
 package org.service;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
-@NoArgsConstructor
-@Data
+@Builder
+@Value
 public class Directory  {
-    private String name;
-    private List<String> files = new ArrayList<>();
-    private List<String> dir=new ArrayList<>();
+    String name;
+    List<File> files = new ArrayList<>();
+    List<String> directories = new ArrayList<>();
+
     public long sizeFiles(){
         return files.stream()
-                .map(this::convertStringToInt)
-                .mapToInt(s->s)
+                .map(File::size)
+                .mapToLong(l->l)
                 .sum();
     }
+   /* public long totalSize (){
+        return dir.stream().mapToLong(Directory::totalSize).sum() + sizeFiles();
+    }*/
 
-    private int convertStringToInt(String s){
-        return Integer.parseInt(s.replaceAll("[^0-9]", ""));
-    }
 }
