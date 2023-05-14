@@ -25,7 +25,6 @@ class ServiceTest {
                 Arguments.of("nppdvjthqldpwncqszvftbrmjlhg",23),
                 Arguments.of("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg",29),
                 Arguments.of("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw",26)
-
         );
     }
     @ParameterizedTest
