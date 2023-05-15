@@ -18,7 +18,4 @@ public class Directory  {
                 .sum();
     }
 
-    private int convertStringToInt(String s){
-        return Integer.parseInt(s.replaceAll("[^0-9]", ""));
-    }
 }
