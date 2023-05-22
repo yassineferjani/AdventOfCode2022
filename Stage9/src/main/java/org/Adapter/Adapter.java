@@ -20,7 +20,8 @@ public class Adapter {
     }
 
     private static Movement mapToMovement(String s){
-        return Movement.builder().direction(mapToDirection(s.charAt(0))).step(s.charAt(2)).build();
+        String [] strings = s.split(" ");
+        return Movement.builder().direction(mapToDirection(strings[0].charAt(0))).step(Integer.parseInt(strings[1])).build();
     }
 
 
