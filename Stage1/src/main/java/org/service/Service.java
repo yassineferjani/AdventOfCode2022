@@ -25,7 +25,7 @@ public class Service {
         return list.stream()
                 .mapToInt(i->i)
                 .max()
-                .orElseThrow();
+                .orElseThrow(RuntimeException::new);
     }
 
     public static int sumThreeMaxCalorieGroup(List<Integer> list){

@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Value;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Builder
 @Data
 public class Rope {
@@ -24,12 +27,15 @@ public class Rope {
         };
     }
 
-    public void execute(final Movement instruction) {
+    public List<Rope> execute(final Movement instruction) {
+        List<Rope> list = new ArrayList<>();
         for(int i =0;i<=instruction.step();i++) {
             tail = Coordinate.builder().y(head.y()).x(head.x()).build();
             Coordinate nextCoordinate = move(head, instruction.direction());
             head = Coordinate.builder().x(nextCoordinate.x()).y(nextCoordinate.y()).build();
+            list.add(Rope.builder().head(head).tail(tail).build());
         }
+        return list;
     }
 
 }
