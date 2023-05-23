@@ -27,13 +27,17 @@ public class Rope {
         };
     }
 
-    public List<Rope> execute(final Movement instruction) {
+    public List<Rope> execute(final List<Movement> instruction) {
         List<Rope> list = new ArrayList<>();
-        for(int i =0;i<=instruction.step();i++) {
-            tail = Coordinate.builder().y(head.y()).x(head.x()).build();
-            Coordinate nextCoordinate = move(head, instruction.direction());
-            head = Coordinate.builder().x(nextCoordinate.x()).y(nextCoordinate.y()).build();
-            list.add(Rope.builder().head(head).tail(tail).build());
+        Direction currentDirection = null;
+        for (Movement movement: instruction) {
+            for(int i =0;i<=movement.step();i++) {
+                if (movement.direction().equals(currentDirection))
+                    tail = Coordinate.builder().y(head.y()).x(head.x()).build();
+                head = move(head, movement.direction());
+                list.add(Rope.builder().head(head).tail(tail).build());
+                currentDirection=movement.direction();
+        }
         }
         return list;
     }

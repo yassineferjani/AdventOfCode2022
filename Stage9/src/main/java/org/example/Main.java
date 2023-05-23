@@ -13,10 +13,10 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 
         List<String> list =Read.readFile("D:\\AdventOfCode2022\\Stage9\\src\\main\\resources\\input9.txt");
-        List<List<Rope>> lists= Service.executeInstructions(Adapter.mapToListOfMovement(list));
+        List<Rope> lists= Service.executeInstructions(Adapter.mapToListOfMovement(list));
         lists.forEach(System.out::println);
         Set<Coordinate> set = Service.tailPosition(lists);
-        System.out.println(set);
+        set.forEach(System.out::println);
         System.out.println(Service.countTailPosition(set));
 
     }
