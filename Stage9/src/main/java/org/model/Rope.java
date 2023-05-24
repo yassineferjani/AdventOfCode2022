@@ -2,7 +2,6 @@ package org.model;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +9,45 @@ import java.util.List;
 @Builder
 @Data
 public class Rope {
-    Coordinate tail;
-    Coordinate head;
+    private Coordinate tail;
+    private Coordinate head;
 
-    public Rope(Coordinate tail, Coordinate head){
+    public Rope(final Coordinate tail, final Coordinate head){
         this.head = head;
         this.tail = tail;
     }
+
+    private Coordinate calculateNextPos(final Coordinate head, final Coordinate tail) {
+        int differenceX = head.x() - tail.x();
+        int differenceY = head.y() - tail.y();
+
+        Coordinate newTail = tail;
+
+        if (differenceX == 2) {
+            newTail = Coordinate.builder().x(head.x() - 1).y(head.y()).build();
+            if (Math.abs(differenceY) < 2) {
+                newTail = Coordinate.builder().x(newTail.x()).y(head.y()).build();
+            }
+        } else if (differenceX == -2) {
+            newTail = Coordinate.builder().x(head.x() + 1).y(head.y()).build();
+            if (Math.abs(differenceY) < 2) {
+                newTail = Coordinate.builder().x(newTail.x()).y(head.y()).build();
+            }
+        } else if (differenceY == 2) {
+            newTail = Coordinate.builder().x(head.x()).y(head.y() - 1).build();
+            if (Math.abs(differenceX) < 2) {
+                newTail = Coordinate.builder().x(head.x()).y(newTail.y()).build();
+            }
+        } else if (differenceY == -2) {
+            newTail = Coordinate.builder().x(head.x()).y(head.y() + 1).build();
+            if (Math.abs(differenceX) < 2) {
+                newTail = Coordinate.builder().x(head.x()).y(newTail.y()).build();
+            }
+        }
+
+        return newTail;
+    }
+
 
     private static Coordinate move (final Coordinate coordinate, final Direction direction) {
         return switch (direction) {
@@ -27,19 +58,23 @@ public class Rope {
         };
     }
 
-    public List<Rope> execute(final List<Movement> instruction) {
-        List<Rope> list = new ArrayList<>();
-        Direction currentDirection = null;
-        for (Movement movement: instruction) {
-            for(int i =0;i<=movement.step();i++) {
-                if (movement.direction().equals(currentDirection))
-                    tail = Coordinate.builder().y(head.y()).x(head.x()).build();
+
+    public List<Rope> execute(final List<Movement> instructions) {
+        List<Rope> ropes = new ArrayList<>();
+        Rope currentRope = Rope.builder().head(head).tail(tail).build();
+        ropes.add(currentRope);
+
+        for (Movement movement : instructions) {
+            for (int i = 0; i < movement.step(); i++) {
                 head = move(head, movement.direction());
-                list.add(Rope.builder().head(head).tail(tail).build());
-                currentDirection=movement.direction();
+                tail = calculateNextPos(head, tail);
+                currentRope = Rope.builder().head(head).tail(tail).build();
+                ropes.add(currentRope);
+            }
         }
-        }
-        return list;
+
+        return ropes;
     }
+
 
 }

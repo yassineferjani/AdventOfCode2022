@@ -14,9 +14,7 @@ public class Main {
 
         List<String> list =Read.readFile("D:\\AdventOfCode2022\\Stage9\\src\\main\\resources\\input9.txt");
         List<Rope> lists= Service.executeInstructions(Adapter.mapToListOfMovement(list));
-        lists.forEach(System.out::println);
         Set<Coordinate> set = Service.tailPosition(lists);
-        set.forEach(System.out::println);
         System.out.println(Service.countTailPosition(set));
 
     }
