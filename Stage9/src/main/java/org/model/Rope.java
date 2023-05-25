@@ -72,7 +72,6 @@ public class Rope {
                 ropes.add(currentRope);
             }
         }
-        System.out.println(ropes);
         return ropes;
     }
 
