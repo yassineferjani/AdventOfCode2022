@@ -21,9 +21,19 @@ public class Service {
                 .collect(Collectors.toSet());
     }
 
+    public static List<Coordinate> tailPosition1(List<Rope> lists){
+        return lists.stream()
+                .skip(9)
+                .filter(r -> lists.indexOf(r) % 9 == 0)
+                .map(Rope::getTail)
+                .collect(Collectors.toList());
+    }
+
     public static int countTailPosition(Set<Coordinate> set){
         return set.size();
     }
-
+    public static int countTailPosition(List<Coordinate> set){
+        return set.size();
+    }
 
 }

@@ -74,6 +74,24 @@ public class Rope {
         }
         return ropes;
     }
+    public Coordinate[] execute2(final List<Movement> instructions) {
+        Coordinate[] ropes = new Coordinate[10];
+        Rope currentRope = Rope.builder().head(head).tail(tail).build();
+        ropes[10]=currentRope.tail;
 
+        for (Movement movement : instructions) {
+            for (int i = 0; i < movement.step(); i++) {
+                head = move(head, movement.direction());
+                tail = calculateNextPos(head, tail);
+                currentRope = Rope.builder().head(head).tail(tail).build();
+                int j=ropes.length-1;
+                if (j>=0)
+                    ropes[j]=currentRope.tail;
+                else
+                    ropes[0]= currentRope.tail;
+            }
+        }
+        return ropes;
+    }
 
 }

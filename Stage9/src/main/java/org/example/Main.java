@@ -16,6 +16,8 @@ public class Main {
         List<Rope> lists= Service.executeInstructions(Adapter.mapToListOfMovement(list));
         Set<Coordinate> set = Service.tailPosition(lists);
         System.out.println(Service.countTailPosition(set));
+        List<Coordinate> set1 = Service.tailPosition1(lists);
+        System.out.println(Service.countTailPosition(set1));
 
     }
 }
