@@ -60,24 +60,6 @@ public class Rope {
         };
     }
 
-
-  /*  public List<Rope> execute(final List<Movement> instructions) {
-        List<Rope> ropes = new ArrayList<>();
-        Rope currentRope = Rope.builder().head(head).tail(tail).build();
-        ropes.add(currentRope);
-
-        for (Movement movement : instructions) {
-            for (int i = 0; i < movement.step(); i++) {
-                head = move(head, movement.direction());
-                tail = calculateNextPos(head, tail);
-                currentRope = Rope.builder().head(head).tail(tail).build();
-                ropes.add(currentRope);
-            }
-        }
-        return ropes;
-    }
-    */
-
     public List<Set<Coordinate>> execute(List<Movement> instructions) {
         List<Set<Coordinate>> positions = new ArrayList<>();
         Set<Coordinate> p1 = new HashSet<>();
@@ -105,8 +87,6 @@ public class Rope {
                 p1.add(tail[0]);
                 p2.add(tail[8]);
             }
-
-
         }
         positions.add(new HashSet<>(p1));
         positions.add(new HashSet<>(p2));
