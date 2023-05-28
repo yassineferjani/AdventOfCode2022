@@ -4,15 +4,17 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @Data
 public class Rope {
-    private Coordinate tail;
+    private Coordinate [] tail;
     private Coordinate head;
 
-    public Rope(final Coordinate tail, final Coordinate head){
+    public Rope(final Coordinate [] tail, final Coordinate head){
         this.head = head;
         this.tail = tail;
     }
@@ -59,7 +61,7 @@ public class Rope {
     }
 
 
-    public List<Rope> execute(final List<Movement> instructions) {
+  /*  public List<Rope> execute(final List<Movement> instructions) {
         List<Rope> ropes = new ArrayList<>();
         Rope currentRope = Rope.builder().head(head).tail(tail).build();
         ropes.add(currentRope);
@@ -74,24 +76,41 @@ public class Rope {
         }
         return ropes;
     }
-    public Coordinate[] execute2(final List<Movement> instructions) {
-        Coordinate[] ropes = new Coordinate[10];
-        Rope currentRope = Rope.builder().head(head).tail(tail).build();
-        ropes[10]=currentRope.tail;
+    */
 
-        for (Movement movement : instructions) {
-            for (int i = 0; i < movement.step(); i++) {
-                head = move(head, movement.direction());
-                tail = calculateNextPos(head, tail);
-                currentRope = Rope.builder().head(head).tail(tail).build();
-                int j=ropes.length-1;
-                if (j>=0)
-                    ropes[j]=currentRope.tail;
-                else
-                    ropes[0]= currentRope.tail;
+    public List<Set<Coordinate>> execute(List<Movement> instructions) {
+        List<Set<Coordinate>> positions = new ArrayList<>();
+        Set<Coordinate> p1 = new HashSet<>();
+        Set<Coordinate> p2 = new HashSet<>();
+
+        p1.add(tail[0]);
+        p2.add(tail[8]);
+
+        for (Movement line : instructions) {
+            Direction d = line.direction();
+            int amt = line.step();
+
+            for (int i = 0; i < amt; i++) {
+                int newHeadX = head.x();
+                int newHeadY = head.y();
+
+                head = move(head, d);
+
+                tail[0] = calculateNextPos(head, tail[0]);
+
+                for (int j = 1; j < 9; j++) {
+                    tail[j] = calculateNextPos(tail[j - 1], tail[j]);
+                }
+
+                p1.add(tail[0]);
+                p2.add(tail[8]);
             }
+
+
         }
-        return ropes;
+        positions.add(new HashSet<>(p1));
+        positions.add(new HashSet<>(p2));
+        return positions;
     }
 
 }
