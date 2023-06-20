@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Service {
 
-    public static List<List<String>> groups(List<String> list) {
+    public static List<List<String>> monkey(List<String> list) {
         List<List<String>> finalList = new ArrayList<>();
         List<String> s = new ArrayList<>();
 
