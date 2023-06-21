@@ -2,10 +2,7 @@ package org.example.service;
 
 import org.example.model.Monkey;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -39,7 +36,7 @@ public class Service {
         Pattern truePattern = Pattern.compile("If true: throw to monkey (\\d+)");
         Pattern falsePattern = Pattern.compile("If false: throw to monkey (\\d+)");
         Map<Boolean,Integer> tests = new HashMap<>();
-        List<Integer> startingItem = new ArrayList<>();
+        Deque<Integer> startingItem = new ArrayDeque<>();
         int id=-1;
         int multi=-1;
         int addition=-1;
