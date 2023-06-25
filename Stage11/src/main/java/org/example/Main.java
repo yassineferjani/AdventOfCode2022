@@ -7,9 +7,10 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
+
         List<String> list = Read.readFile("D:\\AdventOfCode2022\\Stage11\\src\\main\\resources\\input11.txt");
-        List<List<String>> lists = Service.worriedMonkey(list);
-        System.out.println(Service.monkeys(lists));
+        System.out.println(Service.result1(list,20));
+
 
     }
 }

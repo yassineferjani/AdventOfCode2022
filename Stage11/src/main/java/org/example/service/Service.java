@@ -12,7 +12,7 @@ import static java.lang.Boolean.TRUE;
 
 public class Service {
 
-    public static List<List<String>> worriedMonkey(List<String> list) {
+    private static List<List<String>> worriedMonkey(List<String> list) {
         List<List<String>> finalList = new ArrayList<>();
         List<String> s = new ArrayList<>();
 
@@ -48,10 +48,15 @@ public class Service {
             if (monkeyMatch.find()) {
                 id = Integer.parseInt(monkeyMatch.group(1));
             }
+
+
             Matcher multiplyMatch = multiplyPattern.matcher(l);
-            if (multiplyMatch.find()) {
+            if (l.trim().equals("Operation: new = old * old")) {
+                multi = -2;
+            } else if (multiplyMatch.find()) {
                 multi = Integer.parseInt(multiplyMatch.group(1));
             }
+
 
             Matcher additionMatch = additionPattern.matcher(l);
             if (additionMatch.find()) {
@@ -81,13 +86,32 @@ public class Service {
             }
         }
             return Monkey.builder().id(id).multi(multi).addition(addition)
-                    .test(tests).operation(operation).startingItem(startingItem).build();
+                    .test(tests).operation(operation).startingItem(startingItem).inspections(0).build();
     }
 
-
-    public static List<Monkey> monkeys (List<List<String>> lists){
-
-        return lists.stream().map(Service::createMonkeyFromInput).collect(Collectors.toList());
-
+    private static List<Monkey> monkeysList(List<List<String>> lists) {
+        return lists.stream()
+                .map(Service::createMonkeyFromInput)
+                .collect(Collectors.toList());
     }
+    private static List<Monkey> simulateMonkeyGame(List<String> input, int rounds) {
+        List<List<String>> splitInput = worriedMonkey(input);
+        List<Monkey> monkeysList = monkeysList(splitInput);
+        for (int i =0;i<rounds;i++){
+            for (Monkey monkey : monkeysList){
+                monkey.round(monkeysList);
+            }
+        }
+        return monkeysList;
+    }
+    private static List<Integer> inspectionsMonkeys(List<String> input, int rounds){
+        List<Monkey> monkeys = simulateMonkeyGame(input,rounds);
+       return monkeys.stream().map(Monkey::getInspections).collect(Collectors.toList());
+    }
+    public static long result1(List<String> input, int rounds){
+        List<Integer> inspections = inspectionsMonkeys(input,rounds);
+        inspections.sort((o1, o2) -> o2-o1);
+        return (long) inspections.get(0) *inspections.get(1);
+    }
+
 }
