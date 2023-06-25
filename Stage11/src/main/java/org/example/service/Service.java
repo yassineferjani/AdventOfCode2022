@@ -89,7 +89,8 @@ public class Service {
                     .test(tests).operation(operation).startingItem(startingItem).inspections(0).build();
     }
 
-    private static List<Monkey> monkeysList(List<List<String>> lists) {
+
+      private static List<Monkey> monkeysList(List<List<String>> lists) {
         return lists.stream()
                 .map(Service::createMonkeyFromInput)
                 .collect(Collectors.toList());
@@ -97,15 +98,17 @@ public class Service {
     private static List<Monkey> simulateMonkeyGame(List<String> input, int rounds) {
         List<List<String>> splitInput = worriedMonkey(input);
         List<Monkey> monkeysList = monkeysList(splitInput);
+        long ppm = monkeysList.stream().mapToLong(Monkey::getOperation).reduce((left, right) -> left*right).getAsLong();
         for (int i =0;i<rounds;i++){
             for (Monkey monkey : monkeysList){
-                monkey.round(monkeysList);
+                monkey.round(monkeysList,ppm);
             }
         }
         return monkeysList;
     }
     private static List<Integer> inspectionsMonkeys(List<String> input, int rounds){
         List<Monkey> monkeys = simulateMonkeyGame(input,rounds);
+        monkeys.forEach(System.out::println);
        return monkeys.stream().map(Monkey::getInspections).collect(Collectors.toList());
     }
     public static long result1(List<String> input, int rounds){
@@ -113,5 +116,6 @@ public class Service {
         inspections.sort((o1, o2) -> o2-o1);
         return (long) inspections.get(0) *inspections.get(1);
     }
+
 
 }

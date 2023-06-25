@@ -20,11 +20,10 @@ public class Monkey{
 
 
 
-    public void round(List<Monkey> monkeyMap) {
+    public void round(List<Monkey> monkeyMap, Long ppm) {
         while (!this.startingItem.isEmpty()) {
             int item = this.startingItem.pop();
             int newItem;
-            inspections++;
             if (multi == -2) {
                 newItem = item * item;
             } else if (multi != -1) {
@@ -34,7 +33,13 @@ public class Monkey{
             } else {
                 newItem = item;
             }
-            newItem = Math.floorDiv(newItem,3);
+            inspections++;
+
+            if (ppm!=null){
+                System.out.println(ppm);
+                newItem %=ppm;}
+            else
+                newItem = Math.floorDiv(newItem,3);
             if (newItem % operation == 0) {
                 monkeyMap.get(test.get(true)).getStartingItem().add(newItem);
             } else {
