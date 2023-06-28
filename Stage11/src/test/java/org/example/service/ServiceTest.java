@@ -47,6 +47,12 @@ class ServiceTest {
     @ParameterizedTest
     @MethodSource("generateData")
     void test_result1(List<String> input, long expected) {
-        assertThat(Service.result1(input,20)).isEqualTo(expected);
+        assertThat(Service.result1(input,20,false)).isEqualTo(expected);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateData")
+    void test_result2(List<String> input, long expected) {
+        assertThat(Service.result1(input,10000,true)).isEqualTo(2713310158L);
     }
 }

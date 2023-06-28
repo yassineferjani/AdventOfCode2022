@@ -11,7 +11,7 @@ import java.util.Map;
 @Data
 public class Monkey{
     private final int id;
-    private Deque<Integer> startingItem;
+    private Deque<Long> startingItem;
     private int operation;
     private int multi;
     private int addition;
@@ -22,8 +22,8 @@ public class Monkey{
 
     public void round(List<Monkey> monkeyMap, Long ppm) {
         while (!this.startingItem.isEmpty()) {
-            int item = this.startingItem.pop();
-            int newItem;
+            long item = this.startingItem.pop();
+            long newItem;
             if (multi == -2) {
                 newItem = item * item;
             } else if (multi != -1) {
@@ -36,7 +36,6 @@ public class Monkey{
             inspections++;
 
             if (ppm!=null){
-                System.out.println(ppm);
                 newItem %=ppm;}
             else
                 newItem = Math.floorDiv(newItem,3);

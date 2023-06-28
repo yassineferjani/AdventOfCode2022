@@ -36,7 +36,7 @@ public class Service {
         Pattern truePattern = Pattern.compile("If true: throw to monkey (\\d+)");
         Pattern falsePattern = Pattern.compile("If false: throw to monkey (\\d+)");
         Map<Boolean,Integer> tests = new HashMap<>();
-        Deque<Integer> startingItem = new ArrayDeque<>();
+        Deque<Long> startingItem = new ArrayDeque<>();
         int id=-1;
         int multi=-1;
         int addition=-1;
@@ -81,7 +81,7 @@ public class Service {
             if (l.startsWith("Starting items: ")) {
                 String[] items = l.trim().substring("Starting items: ".length()).split(", ");
                 for (String item : items) {
-                    startingItem.add(Integer.parseInt(item));
+                    startingItem.add(Long.valueOf(Integer.parseInt(item)));
                 }
             }
         }
@@ -95,24 +95,27 @@ public class Service {
                 .map(Service::createMonkeyFromInput)
                 .collect(Collectors.toList());
     }
-    private static List<Monkey> simulateMonkeyGame(List<String> input, int rounds) {
+    private static List<Monkey> simulateMonkeyGame(List<String> input, int rounds, boolean test) {
         List<List<String>> splitInput = worriedMonkey(input);
         List<Monkey> monkeysList = monkeysList(splitInput);
         long ppm = monkeysList.stream().mapToLong(Monkey::getOperation).reduce((left, right) -> left*right).getAsLong();
         for (int i =0;i<rounds;i++){
             for (Monkey monkey : monkeysList){
-                monkey.round(monkeysList,ppm);
+                if (test)
+                    monkey.round(monkeysList,ppm);
+                else
+                    monkey.round(monkeysList,null);
             }
         }
         return monkeysList;
     }
-    private static List<Integer> inspectionsMonkeys(List<String> input, int rounds){
-        List<Monkey> monkeys = simulateMonkeyGame(input,rounds);
+    private static List<Integer> inspectionsMonkeys(List<String> input, int rounds, boolean ppm){
+        List<Monkey> monkeys = simulateMonkeyGame(input,rounds,ppm);
         monkeys.forEach(System.out::println);
        return monkeys.stream().map(Monkey::getInspections).collect(Collectors.toList());
     }
-    public static long result1(List<String> input, int rounds){
-        List<Integer> inspections = inspectionsMonkeys(input,rounds);
+    public static long result1(List<String> input, int rounds, boolean ppm){
+        List<Integer> inspections = inspectionsMonkeys(input,rounds,ppm);
         inspections.sort((o1, o2) -> o2-o1);
         return (long) inspections.get(0) *inspections.get(1);
     }
