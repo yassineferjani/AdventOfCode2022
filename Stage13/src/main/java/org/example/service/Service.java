@@ -34,7 +34,7 @@ public class Service {
         while (!lists.get(0).isEmpty() && !lists.get(1).isEmpty()){
             int i = lists.get(0).size();
         if(lists.get(0).get(i-1)<lists.get(1).get(j)) {
-            listCombination.add(List.of(s.substring(lists.get(0).get(i-1), lists.get(1).get(j)+1)));
+            listCombination.add(List.of(s.substring(lists.get(0).get(i-1)+1, lists.get(1).get(j))));
             lists.get(0).remove(i-1);
             lists.get(1).remove(j);
             j=0;
