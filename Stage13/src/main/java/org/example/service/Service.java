@@ -1,8 +1,7 @@
 package org.example.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Service {
 
@@ -43,6 +42,19 @@ public class Service {
         }
         }
         return listCombination;
+     }
+
+     public static Map<Integer, List<List<String>>> convertInputToMap(List<String> list){
+       /* return list.stream().map(Service::extractSubList).collect(Collectors.toMap(i -> i, i -> list.get(i))))*/
+         Map<Integer,List<List<String>>> map = new HashMap<>();
+         int j = 1;
+         for (String s : list){
+             if(null!=s) {
+                 map.put(j, extractSubList(s));
+                 j++;
+             }
+         }
+         return map;
      }
 
 
