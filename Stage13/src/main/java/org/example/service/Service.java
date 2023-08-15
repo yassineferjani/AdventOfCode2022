@@ -44,14 +44,18 @@ public class Service {
         return listCombination;
      }
 
-     public static Map<Integer, List<List<String>>> convertInputToMap(List<String> list){
+     public static Map<Integer,List<List<List<String>>>> convertInputToMap(List<String> list){
        /* return list.stream().map(Service::extractSubList).collect(Collectors.toMap(i -> i, i -> list.get(i))))*/
-         Map<Integer,List<List<String>>> map = new HashMap<>();
+         Map<Integer,List<List<List<String>>>> map = new HashMap<>();
+         List<List<List<String>>> l = new ArrayList<>();
          int j = 1;
          for (String s : list){
-             if(null!=s) {
-                 map.put(j, extractSubList(s));
+             if(null==s) {
+                 map.put(j, l);
                  j++;
+             }
+             else {
+                 l.add(extractSubList(s));
              }
          }
          return map;
