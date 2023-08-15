@@ -1,7 +1,6 @@
 package org.example.service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Service {
 
@@ -45,7 +44,6 @@ public class Service {
      }
 
      public static Map<Integer,List<List<List<String>>>> convertInputToMap(List<String> list){
-       /* return list.stream().map(Service::extractSubList).collect(Collectors.toMap(i -> i, i -> list.get(i))))*/
          Map<Integer,List<List<List<String>>>> map = new HashMap<>();
          List<List<List<String>>> l = new ArrayList<>();
          int j = 1;

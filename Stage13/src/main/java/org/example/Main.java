@@ -4,6 +4,8 @@ import org.example.service.Service;
 
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
@@ -14,6 +16,7 @@ public class Main {
         //List<String> input = List.of("[1,[2,[3,4],[5,6,0]],8,9]");
         //System.out.println(input.substring(12,19));
         //Service.extractSubList(input).forEach(System.out::println);
-        System.out.println(Service.convertInputToMap(input));
+        Map<Integer,List<List<List<String>>>> map = Service.convertInputToMap(input);
+        map.get(1).forEach(System.out::println);
     }
 }
