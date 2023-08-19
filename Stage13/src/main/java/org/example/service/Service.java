@@ -4,12 +4,13 @@ import java.util.*;
 
 public class Service {
 
-    public static void split(List<String> list){
+    public static List<Integer> split(List<String> list){
         for (String l :list) {
             if (l!=null) {
-                Arrays.stream(l.split(",")).forEach(System.out::println);
+                return  Arrays.stream(l.split(",")).map(Integer::valueOf).toList();
             }
         }
+        throw new RuntimeException("No String");
     }
 
     public static List<List<Integer>> extractIndexList(String s){
