@@ -4,13 +4,14 @@ import java.util.*;
 
 public class Service {
 
-    public static List<Integer> split(List<String> list){
+    public static Packet split(List<String> list){
+        List<List<Integer>> lists = new ArrayList<>();
         for (String l :list) {
             if (l!=null) {
-                return  Arrays.stream(l.split(",")).map(Integer::valueOf).toList();
+                lists.add(Arrays.stream(l.split(",")).map(Integer::valueOf).toList());
             }
         }
-        throw new RuntimeException("No String");
+        return Packet.builder().list(lists).build();
     }
 
     public static List<List<Integer>> extractIndexList(String s){
@@ -49,16 +50,20 @@ public class Service {
          List<List<List<String>>> l = new ArrayList<>();
          int j = 1;
          for (String s : list){
-             if(null==s) {
-                 map.put(j, l);
-                 j++;
-             }
-             else {
+             if(s!=null) {
                  l.add(extractSubList(s));
              }
+             else {
+                 map.put(j, l);
+                 j++;
+                 l= new ArrayList<>();
+             }
          }
+         map.put(j+1, l);
          return map;
      }
+
+
 
 
 }

@@ -3,9 +3,9 @@ package org.example;
 import org.example.service.Service;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
@@ -17,6 +17,8 @@ public class Main {
         //System.out.println(input.substring(12,19));
         //Service.extractSubList(input).forEach(System.out::println);
         Map<Integer,List<List<List<String>>>> map = Service.convertInputToMap(input);
-        map.get(1).forEach(System.out::println);
+        map.forEach((key, value) -> System.out.println(key + " " + value));
+
+
     }
 }
