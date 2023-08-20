@@ -1,9 +1,9 @@
 package org.example.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Builder;
 
-import java.util.List;
 @Builder
-public record Packet(List<List<Integer>> list) {
+public record Packet(JsonNode right, JsonNode left) {
 
 }
