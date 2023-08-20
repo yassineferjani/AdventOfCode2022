@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Service {
 
-     public static JsonNode createPacket(String s) throws JsonProcessingException {
+     private static JsonNode createPacket(String s) throws JsonProcessingException {
          ObjectMapper objectMapper = new ObjectMapper();
          JsonNode jsonNode = objectMapper.readTree(s);
          if (jsonNode.isArray())
@@ -18,7 +18,7 @@ public class Service {
          throw new RuntimeException();
      }
 
-    public static Map<Integer,Packet> createListPacket (List<String> list) throws JsonProcessingException {
+    private static Map<Integer,Packet> createListPacket (List<String> list) throws JsonProcessingException {
         Map<Integer,Packet> map = new HashMap<>();
         int j = 1;
         int i = 0;
@@ -41,6 +41,44 @@ public class Service {
         map.put(j, Packet.builder().left(left).right(right).build());
         return map;
     }
+
+    private static boolean compare(JsonNode right, JsonNode left) {
+        int size = right.size();
+
+        for (int i = 0; i < size; i++) {
+            if (i >= left.size()) {
+                return false;
+            }
+            if (right.get(i).size() < left.get(i).size())
+                return false;
+            if (!right.get(i).isArray() || !left.get(i).isArray()) {
+                int  a = right.get(i).asInt();
+                int  b = left.get(i).asInt();
+                if (right.get(i).asInt() > left.get(i).asInt()) {
+                    return false;
+                }
+            } else {
+                if (!compare(right.get(i), left.get(i)))
+                    return false;
+            }
+            }
+        return true;
+     }
+
+
+    public static int resolvePart1(List<String> list) throws JsonProcessingException {
+        Map<Integer,Packet> map = createListPacket(list);
+        int result = 0;
+        for (Map.Entry<Integer, Packet> entry : map.entrySet()) {
+            if (compare(entry.getValue().right(), entry.getValue().left())) {
+                result += entry.getKey();
+                System.out.println(entry.getKey());
+            }
+        }
+        return result;
+    }
+
+
 
 
 }
