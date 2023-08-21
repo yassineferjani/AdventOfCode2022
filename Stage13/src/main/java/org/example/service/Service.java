@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class Service {
 
      private static JsonNode createPacket(String s) throws JsonProcessingException {
@@ -34,35 +35,58 @@ public class Service {
                 left = createPacket(s);
             }
             else {
-                map.put(j, Packet.builder().right(right).left(left).build());
+                map.put(Integer.valueOf(j), Packet.builder().right(right).left(left).build());
                 j++;
             }
         }
-        map.put(j, Packet.builder().left(left).right(right).build());
+        map.put(Integer.valueOf(j), Packet.builder().left(left).right(right).build());
         return map;
     }
 
-    private static boolean compare(JsonNode right, JsonNode left) {
-        int size = right.size();
+    private static boolean compare(JsonNode right, JsonNode left){
+         for (int i = 0; i < right.size(); i++) {
+             var vv = right.get(i);
+             var vvv = left.get(i);
+             if (i >= left.size()) {
+                 return false;
+             }
 
-        for (int i = 0; i < size; i++) {
-            if (i >= left.size()) {
-                return false;
-            }
-            if (right.get(i).size() < left.get(i).size())
-                return false;
-            if (!right.get(i).isArray() || !left.get(i).isArray()) {
-                int  a = right.get(i).asInt();
-                int  b = left.get(i).asInt();
-                if (right.get(i).asInt() > left.get(i).asInt()) {
-                    return false;
-                }
-            } else {
-                if (!compare(right.get(i), left.get(i)))
-                    return false;
-            }
-            }
-        return true;
+             if (!right.get(i).isArray() && !left.get(i).isArray()) {
+
+                 if (right.get(i).asInt() > left.get(i).asInt()) {
+                     int a = right.get(i).asInt();
+                     int b = left.get(i).asInt();
+                     return false;
+                 }
+             } else {
+                 if (right.get(i).isArray() && !left.get(i).isArray()){
+                     if (!compare(right.get(i), convertSimpleNodeToJson(left.get(i).toPrettyString())))
+                         return false;
+                 }else  if (!right.get(i).isArray() && left.get(i).isArray()){
+                     if (!compare(convertSimpleNodeToJson(right.get(i).toPrettyString()),left.get(i)))
+                         return false;
+                 }else {
+                     if (!compare(right.get(i), left.get(i)))
+                         return false;
+                 }
+             }
+         }
+         return true;
+     }
+
+     private static JsonNode convertSimpleNodeToJson(String s) {
+         try {
+             ObjectMapper objectMapper = new ObjectMapper();
+             JsonNode jsonNode = objectMapper.readTree(s);
+
+             if (!jsonNode.isArray()) {
+                 jsonNode = objectMapper.createArrayNode().add(jsonNode);
+             }
+
+             return jsonNode;
+         } catch (Exception e) {
+            throw new RuntimeException();
+         }
      }
 
 
@@ -77,9 +101,5 @@ public class Service {
         }
         return result;
     }
-
-
-
-
 }
 
