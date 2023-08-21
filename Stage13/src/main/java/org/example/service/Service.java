@@ -43,35 +43,39 @@ public class Service {
         return map;
     }
 
-    private static boolean compare(JsonNode right, JsonNode left){
+    private static Boolean compare(JsonNode right, JsonNode left){
          for (int i = 0; i < right.size(); i++) {
-             var vv = right.get(i);
-             var vvv = left.get(i);
-             if (i >= left.size()) {
-                 return false;
-             }
+             if (left.size() <= i)
+                 return Boolean.FALSE;
 
              if (!right.get(i).isArray() && !left.get(i).isArray()) {
-
                  if (right.get(i).asInt() > left.get(i).asInt()) {
-                     int a = right.get(i).asInt();
-                     int b = left.get(i).asInt();
-                     return false;
+                     return Boolean.FALSE;
+                 }
+                 if (right.get(i).asInt() < left.get(i).asInt()) {
+                     return Boolean.TRUE;
                  }
              } else {
                  if (right.get(i).isArray() && !left.get(i).isArray()){
-                     if (!compare(right.get(i), convertSimpleNodeToJson(left.get(i).toPrettyString())))
-                         return false;
+                     if (Boolean.FALSE.equals(compare(right.get(i), convertSimpleNodeToJson(left.get(i).toPrettyString())))){
+                         if (compare(right.get(i), convertSimpleNodeToJson(left.get(i).toPrettyString())) != null) {
+                             return compare(right.get(i), convertSimpleNodeToJson(left.get(i).toPrettyString()));
+                         }
+                     }
                  }else  if (!right.get(i).isArray() && left.get(i).isArray()){
-                     if (!compare(convertSimpleNodeToJson(right.get(i).toPrettyString()),left.get(i)))
-                         return false;
+                     if (Boolean.FALSE.equals(compare(convertSimpleNodeToJson(right.get(i).toPrettyString()), left.get(i))))
+                         if (compare(convertSimpleNodeToJson(right.get(i).toPrettyString()), left.get(i)) != null) {
+                             return compare(convertSimpleNodeToJson(right.get(i).toPrettyString()), left.get(i));
+                         }
                  }else {
-                     if (!compare(right.get(i), left.get(i)))
-                         return false;
+                     if (Boolean.FALSE.equals(compare(right.get(i), left.get(i))))
+                         if (compare(right.get(i), left.get(i)) != null) {
+                             return compare(right.get(i), left.get(i));
+                         }
                  }
              }
          }
-         return true;
+        return right.size() != left.size() ? Boolean.TRUE : null;
      }
 
      private static JsonNode convertSimpleNodeToJson(String s) {
@@ -94,7 +98,7 @@ public class Service {
         Map<Integer,Packet> map = createListPacket(list);
         int result = 0;
         for (Map.Entry<Integer, Packet> entry : map.entrySet()) {
-            if (compare(entry.getValue().right(), entry.getValue().left())) {
+            if (Boolean.TRUE.equals(compare(entry.getValue().right(), entry.getValue().left()))) {
                 result += entry.getKey();
                 System.out.println(entry.getKey());
             }
